@@ -1,12 +1,15 @@
+import api.UserApi;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
 import models.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import io.restassured.response.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("UI Автотесты Stellar Burgers")
@@ -15,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RegistrationTest extends BaseTest {
 
     private User testUser;
+    private String accessToken = null;
 
     @BeforeEach
     @Step("Подготовка тестовых данных: создание уникального пользователя")
@@ -25,6 +29,15 @@ public class RegistrationTest extends BaseTest {
                 "password123",
                 "Тестовый пользователь"
         );
+    }
+
+    @AfterEach
+    @Step("Удаление тестового пользователя через API")
+    public void deleteTestUser() {
+        if (accessToken != null && !accessToken.isEmpty()) {
+            UserApi.deleteUser(accessToken);
+            System.out.println("Пользователь удален: " + testUser.getEmail());
+        }
     }
 
     @Test
@@ -49,6 +62,12 @@ public class RegistrationTest extends BaseTest {
                 "После успешной регистрации должен быть переход на страницу входа");
         assertTrue(driver.getCurrentUrl().contains("/login"),
                 "URL должен быть страницей входа");
+
+        Response loginResponse = UserApi.loginUser(testUser);
+        if (loginResponse.getStatusCode() == 200) {
+            accessToken = UserApi.getAccessToken(loginResponse);
+            System.out.println("Получен токен для удаления пользователя: " + testUser.getEmail());
+        }
     }
 
     @Test
