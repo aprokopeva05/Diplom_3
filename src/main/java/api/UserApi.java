@@ -19,7 +19,13 @@ public class UserApi {
                 .when()
                 .post("/api/auth/register");
     }
-
+    public static Response loginUser(User user) {
+        return given()
+                .header("Content-type", "application/json")
+                .body(user)
+                .when()
+                .post("/api/auth/login");
+    }
     public static Response deleteUser(String accessToken) {
         return given()
                 .header("Authorization", accessToken)
