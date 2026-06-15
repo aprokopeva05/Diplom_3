@@ -2,10 +2,13 @@ import config.BrowserDriver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
+import java.time.Duration;
 
 public abstract class BaseTest {
     protected WebDriver driver;
+    protected WebDriverWait wait;
     protected MainPage mainPage;
     protected LoginPage loginPage;
     protected RegisterPage registerPage;
@@ -16,16 +19,17 @@ public abstract class BaseTest {
 
     @BeforeEach
     public void setUp() {
+        String browser = System.getProperty("browser", "chrome");
+        System.out.println("Запуск браузера: " + browser);
+
         driver = BrowserDriver.createWebDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         System.out.println("Открытие URL: " + BASE_URL);
         driver.get(BASE_URL);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        wait.until(driver -> ((org.openqa.selenium.JavascriptExecutor) driver)
+                .executeScript("return document.readyState").equals("complete"));
 
         System.out.println("Текущий URL: " + driver.getCurrentUrl());
 

@@ -53,10 +53,15 @@ public class LogoutTest extends BaseTest {
     @DisplayName("Выход из аккаунта через кнопку 'Выйти' в личном кабинете")
     @Description("Проверка, что пользователь может выйти из аккаунта")
     @Step("Тест: Выход из аккаунта")
-    public void testLogoutFromProfile() throws InterruptedException {
+    public void testLogoutFromProfile() {
+        // Переход в личный кабинет и ожидание загрузки страницы профиля
         mainPage.clickPersonalAccount();
-        Thread.sleep(2000);
+        profilePage.waitForProfilePageLoad();
+
+        // Нажатие на кнопку "Выйти"
         profilePage.clickLogoutButton();
+
+        // Ожидание перехода на страницу входа и проверка
         loginPage.waitForLoginPageLoad();
         assertTrue(loginPage.isLoginPageLoaded());
         assertTrue(driver.getCurrentUrl().contains("/login"));

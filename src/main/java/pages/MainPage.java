@@ -21,6 +21,11 @@ public class MainPage extends BasePage {
     // Активный таб
     private final By activeTab = By.xpath("//div[contains(@class, 'tab_tab_type_current')]//span");
 
+    // Заголовки разделов с ингредиентами
+    private final By bunsSectionTitle = By.xpath("//h2[text()='Булки']");
+    private final By saucesSectionTitle = By.xpath("//h2[text()='Соусы']");
+    private final By fillingsSectionTitle = By.xpath("//h2[text()='Начинки']");
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
@@ -48,24 +53,49 @@ public class MainPage extends BasePage {
     public void goToBunsTab() {
         WebElement buns = wait.until(ExpectedConditions.elementToBeClickable(bunsTab));
         buns.click();
-        try { Thread.sleep(300); } catch (InterruptedException e) {}
+        wait.until(ExpectedConditions.textToBe(activeTab, "Булки"));
     }
 
     public void goToSaucesTab() {
         WebElement sauces = wait.until(ExpectedConditions.elementToBeClickable(saucesTab));
         sauces.click();
-        try { Thread.sleep(300); } catch (InterruptedException e) {}
+        wait.until(ExpectedConditions.textToBe(activeTab, "Соусы"));
     }
 
     public void goToFillingsTab() {
         WebElement fillings = wait.until(ExpectedConditions.elementToBeClickable(fillingsTab));
         fillings.click();
-        try { Thread.sleep(300); } catch (InterruptedException e) {}
+        wait.until(ExpectedConditions.textToBe(activeTab, "Начинки"));
     }
 
     public String getActiveTabText() {
         WebElement active = wait.until(ExpectedConditions.visibilityOfElementLocated(activeTab));
         return active.getText();
+    }
+
+    // Методы для проверки видимости разделов с ингредиентами
+    public boolean isBunsSectionDisplayed() {
+        try {
+            return driver.findElement(bunsSectionTitle).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isSaucesSectionDisplayed() {
+        try {
+            return driver.findElement(saucesSectionTitle).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isFillingsSectionDisplayed() {
+        try {
+            return driver.findElement(fillingsSectionTitle).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isMainPageLoaded() {
