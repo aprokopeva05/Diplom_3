@@ -73,31 +73,6 @@ public class MainPage extends BasePage {
         return active.getText();
     }
 
-    // Методы для проверки видимости разделов с ингредиентами
-    public boolean isBunsSectionDisplayed() {
-        try {
-            return driver.findElement(bunsSectionTitle).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public boolean isSaucesSectionDisplayed() {
-        try {
-            return driver.findElement(saucesSectionTitle).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public boolean isFillingsSectionDisplayed() {
-        try {
-            return driver.findElement(fillingsSectionTitle).isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public boolean isMainPageLoaded() {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(pageLoaded));
