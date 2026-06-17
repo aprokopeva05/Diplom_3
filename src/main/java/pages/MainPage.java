@@ -21,11 +21,6 @@ public class MainPage extends BasePage {
     // Активный таб
     private final By activeTab = By.xpath("//div[contains(@class, 'tab_tab_type_current')]//span");
 
-    // Заголовки разделов с ингредиентами
-    private final By bunsSectionTitle = By.xpath("//h2[text()='Булки']");
-    private final By saucesSectionTitle = By.xpath("//h2[text()='Соусы']");
-    private final By fillingsSectionTitle = By.xpath("//h2[text()='Начинки']");
-
     public MainPage(WebDriver driver) {
         super(driver);
     }
